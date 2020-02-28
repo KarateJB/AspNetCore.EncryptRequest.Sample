@@ -126,15 +126,15 @@ namespace AspNetCore.EncryptRequest.Filters
                     {
                         try
                         {
-                            // var privateKey = await this.keyManager.GetPrivateKeyAsync(KeyTypeEnum.RSA);
+                            #region Get public key 
+                            var privateKey = await this.keyManager.GetPrivateKeyAsync(KeyTypeEnum.RSA);
 
                             // To test retry policy...
-                            #region 
-                            var privateKey = string.Empty;
-                            if (retryTimes > 0)
-                                privateKey = await this.keyManager.GetPrivateKeyAsync(KeyTypeEnum.RSA);
-                            else
-                                privateKey = (await this.keyManager.CreateDefaultAsymmetricKey(KeyTypeEnum.RSA, isIncludePrivateKey: true)).PrivateKey; // Set a incorrect private key to decrypt
+                            ////var privateKey = string.Empty;
+                            ////if (retryTimes > 0)
+                            ////   privateKey = await this.keyManager.GetPrivateKeyAsync(KeyTypeEnum.RSA);
+                            ////else
+                            ////   privateKey = (await this.keyManager.CreateDefaultAsymmetricKey(KeyTypeEnum.RSA, isIncludePrivateKey: true)).PrivateKey; // Set a incorrect private key to decrypt
                             #endregion
 
                             #region Decrypt and refactor to add escape charater for "\"
@@ -219,23 +219,7 @@ namespace AspNetCore.EncryptRequest.Filters
                 return string.Empty;
             }
         }
-
-        private bool ValidateReceiverApp(
-            string apiUri, string valClientRequest, string valApiExpected, ref string err)
-        {
-            const bool isValidateOk = true;
-
-            if (string.IsNullOrEmpty(valClientRequest) ||
-                string.IsNullOrEmpty(valApiExpected) ||
-                !valClientRequest.Equals(valApiExpected))
-            {
-                err += $"{apiUri}'s receiver is defined as \"{valApiExpected}\", not \"{valClientRequest}\" ";
-                return !isValidateOk;
-            }
-
-            return isValidateOk;
-        }
-
+        
         /// <summary>
         /// Validate the required headers
         /// </summary>

@@ -31,9 +31,9 @@ namespace AspNetCore.EncryptRequest.Controllers
 
             var requestModel = new Bank()
             {
-                  Name = "NoMoney bank",
-                   Merchants = new List<Merchant>()
-                   { 
+                Name = "NoMoney bank",
+                Merchants = new List<Merchant>()
+                   {
                     new Merchant{ Name="Merchant1", Address = "@#$#$%^&" },
                     new Merchant{ Name="Merchant2", Address = ")^%$(*&#" }
                    }
@@ -46,26 +46,23 @@ namespace AspNetCore.EncryptRequest.Controllers
         [Route("Send")]
         public async Task<IActionResult> SendAsync()
         {
-            using (var rsa = new RsaService())
-            {
-                var httpClient = this.httpClientFactory.CreateClient(HttpClientNameEnum.CipherHttpClient.ToString());
-                var response = await httpClient.PostAsJsonAsync("api/Demo/Receive", this.testData);
+            var httpClient = this.httpClientFactory.CreateClient(HttpClientNameEnum.CipherHttpClient.ToString());
+            var response = await httpClient.PostAsJsonAsync("api/Demo/Receive", this.testData);
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return this.Ok();
-                }
-                else
-                {
-                    return this.BadRequest();
-                }
+            if (response.IsSuccessStatusCode)
+            {
+                return this.Ok();
+            }
+            else
+            {
+                return this.BadRequest();
             }
         }
 
         [HttpPost]
         [TypeFilter(typeof(DecryptRequestFilter))]
         [Route("Receive")]
-        public async Task<IActionResult> ReceiveAsync([FromBody]string encryptedData)
+        public async Task<IActionResult> ReceiveAsync([FromBody]string jsonStr)
         {
             // If DecryptRequestFilter does not add escape character ("\") on the stream,
             // We cannot bind the body'data to MVC action's model
@@ -76,14 +73,14 @@ namespace AspNetCore.EncryptRequest.Controllers
             ////}
 
             // (Optional)Deserialize to an object, array or something...
-            var model = await Task.Run( () => JsonConvert.DeserializeObject<Bank>(encryptedData));
+            var model = await Task.Run(() => JsonConvert.DeserializeObject<Bank>(jsonStr));
 
-            if (string.IsNullOrEmpty(encryptedData))
+            if (string.IsNullOrEmpty(jsonStr))
             {
                 return this.BadRequest();
             }
 
-            if (encryptedData.Equals(this.testData))
+            if (jsonStr.Equals(this.testData))
             {
                 return this.Ok();
             }
