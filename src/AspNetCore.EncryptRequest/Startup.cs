@@ -42,7 +42,6 @@ namespace AspNetCore.EncryptRequest
 
             #region HttpMessage Handlers and HttpClientFactory
 
-            // TODO: Move the HttpClient setting to KMS-Client-SDK (ISSUE: https://cybersoft4u.atlassian.net/browse/CTIS-2017)
             services.AddTransient<CustomHeaderHttpClientHandler>();
             services.AddTransient<EncryptHttpClientHandler>();
             services.AddSingleton<PollyRetryPolicyHandler>();
