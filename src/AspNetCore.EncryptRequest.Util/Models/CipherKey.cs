@@ -1,37 +1,18 @@
-﻿using System;
+using System;
 
 namespace AspNetCore.EncryptRequest.Util.Models
 {
-    /// <summary>
-    /// Key information
-    /// </summary>
     [Serializable]
     public class CipherKey
     {
-        /// <summary>
-        /// GUID
-        /// </summary>
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
-        /// <summary>
-        /// Key Type
-        /// </summary>
         public KeyTypeEnum KeyType { get; set; }
 
-        /// <summary>
-        /// Key | Public key in base64
-        /// </summary>
-        public string PublicKey { get; set; }
+        public string? PublicKey { get; set; }
 
-        /// <summary>
-        /// Key | Private key in base64
-        /// </summary>
-        public string PrivateKey { get; set; }
+        public string? PrivateKey { get; set; }
 
-        /// <summary>
-        /// ToString
-        /// </summary>
-        /// <returns>The masked key information</returns>
         public override string ToString()
         {
             var info =

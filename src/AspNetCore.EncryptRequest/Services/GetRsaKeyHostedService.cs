@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AspNetCore.EncryptRequest.Util.Models;
@@ -8,12 +8,9 @@ using Microsoft.Extensions.Logging;
 
 namespace AspNetCore.EncryptRequest.Services
 {
-    /// <summary>
-    /// Get RSA key pair hosted service
-    /// </summary>
     public class GetRsaKeyHostedService: IHostedService
     {
-        private readonly IServiceProvider serviceProvider = null;
+        private readonly IServiceProvider serviceProvider;
 
         public GetRsaKeyHostedService(IServiceProvider serviceProvider)
         {
